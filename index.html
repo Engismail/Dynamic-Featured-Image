@@ -28,37 +28,222 @@
     <div id="content-wrapper">
       <div class="inner clearfix">
         <section id="main-content">
-          <h3>
-<a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span></a>Welcome to GitHub Pages.</h3>
+          <h2>
+<a name="dynamic-featured-image-a-wordpress-plugin" class="anchor" href="#dynamic-featured-image-a-wordpress-plugin"><span class="octicon octicon-link"></span></a>Dynamic Featured Image (A WordPress Plugin)</h2>
 
-<p>This automatic page generator is the easiest way to create beautiful pages for all of your projects. Author your page content here using GitHub Flavored Markdown, select a template crafted by a designer, and publish. After your page is generated, you can check out the new branch:</p>
+<p><em>Dynamically adds multiple featured image (post thumbnail) functionality to posts, pages and custom post types.</em></p>
 
-<pre><code>$ cd your_repo_root/repo_name
-$ git fetch origin
-$ git checkout gh-pages
+<h3>
+<a name="overview" class="anchor" href="#overview"><span class="octicon octicon-link"></span></a>Overview</h3>
+
+<p>Dynamic Featured Image enables the option to have MULTIPLE featured images within a post or page. 
+This is especially helpful when you use other plugins, post thumbnails or sliders that use featured images.
+Why limit yourself to only one featured image if you can do some awesome stuffs with multiple featured image? 
+DFI allows you to add different number of featured images to each post and page that can be collected by the various theme functions.</p>
+
+<h3>
+<a name="installation" class="anchor" href="#installation"><span class="octicon octicon-link"></span></a>Installation</h3>
+
+<ol>
+<li>Unzip and upload the <code>dynamic-featured-images</code> directory to the plugin directory (<code>/wp-content/plugins/</code>) or install it from <code>Plugins-&gt;Add New-&gt;Upload</code>
+</li>
+<li>Activate the plugin through the <code>Plugins</code> menu in WordPress.</li>
+<li>If you don't see new featured image box, click <code>Screen Options</code> in the upper right corner of your wordpress admin and make sure that the <code>Featured Image 2</code> box is slected.</li>
+</ol><h3>
+<a name="how-it-works" class="anchor" href="#how-it-works"><span class="octicon octicon-link"></span></a>How it works?</h3>
+
+<ol>
+<li>
+<p>After successfull plugin activation go to <code>add</code> or <code>edit</code> page of posts or pages and you will notice a box for second featured image.</p>
+
+<p><img src="http://ankitpokhrel.com.np/dfi/snapshot_1.jpg" alt="Snapshot 1"></p>
+</li>
+<li>
+<p>Click <code>Set featured image</code>, select required image from media popup and click <code>Insert into Post</code>.</p>
+
+<p><img src="http://ankitpokhrel.com.np/dfi/snapshot_2.jpg" alt="Snapshot 2"></p>
+</li>
+<li>
+<p>Click on <code>Add New</code> to add new featured image or use <code>Remove</code> link to remove the featured image box.</p>
+
+<p><img src="http://ankitpokhrel.com.np/dfi/snapshot_3.jpg" alt="Snapshot 3"></p>
+</li>
+<li><p>After adding featured images click <code>publish</code> or <code>update</code> to save featured images.</p></li>
+</ol><h6>
+<a name="note-the-featured-images-are-only-saved-when-you-publish-or-update-the-post" class="anchor" href="#note-the-featured-images-are-only-saved-when-you-publish-or-update-the-post"><span class="octicon octicon-link"></span></a><em>Note: The featured images are only saved when you publish or update the post.</em>
+</h6>
+
+<h3>
+<a name="retrieving-images-in-a-theme" class="anchor" href="#retrieving-images-in-a-theme"><span class="octicon octicon-link"></span></a>Retrieving Images in a Theme</h3>
+
+<ul>
+<li>To get featured images of specific post</li>
+</ul><pre><code>if( function_exists('dfiGetFeaturedImages') )
+   $featuredImages = dfiGetFeaturedImages($postId);
 </code></pre>
 
-<p>If you're using the GitHub for Mac, simply sync your repository and you'll see the new branch.</p>
+<ul>
+<li>To get featured images in a post loop.</li>
+</ul><pre><code>&lt;?php 
+   while ( have_posts() ) : the_post();
+
+   if( function_exists('dfiGetFeaturedImages') ) {
+       $featuredImages = dfiGetFeaturedImages();
+   }
+
+   endwhile;
+?&gt;
+</code></pre>
+
+<ul>
+<li>The data is returned as an array that contain selected image and full size path to the selected image.</li>
+</ul><pre><code>array
+  0 =&gt; 
+    array
+      'thumb' =&gt; string 'http://your_site/upload_path/yourSelectedImage.jpg' (length=50)
+      'full' =&gt; string 'http://your_site/upload_path/yourSelectedImage_fullSize.jpg' (length=69)
+  1 =&gt; 
+    array
+      'thumb' =&gt; string 'http://your_site/upload_path/yourSelectedImage.jpg' (length=50)
+      'full' =&gt; string 'http://your_site/upload_path/yourSelectedImage_fullSize.jpg' (length=69)
+  2 =&gt; ...
+</code></pre>
+
+<h2>
+<a name="shortcode-and-fancybox-integration--ver-12-" class="anchor" href="#shortcode-and-fancybox-integration--ver-12-"><span class="octicon octicon-link"></span></a>ShortCode and FancyBox Integration ( ver. 1.2+ )</h2>
 
 <h3>
-<a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span></a>Designer Templates</h3>
+<a name="using-shortcode" class="anchor" href="#using-shortcode"><span class="octicon octicon-link"></span></a>Using shortcode</h3>
 
-<p>We've crafted some handsome templates for you to use. Go ahead and continue to layouts to browse through them. You can easily go back to edit your page before publishing. After publishing your page, you can revisit the page generator and switch to another theme. Your Page content will be preserved if it remained markdown format.</p>
+<p>The <code>shortcode</code> to get all the image with embeded fancybox support is:</p>
+
+<pre><code>[dfiFeaturedImages]
+
+//Options
+width: width of the thumbnail displayed (default: 150)
+height: height of the thumbnail displayed (default: 150)
+
+//Example
+[dfiFeaturedImages width="300" height="300"]
+</code></pre>
 
 <h3>
-<a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span></a>Rather Drive Stick?</h3>
+<a name="retrieving-images-with-fancybox-support-in-a-theme" class="anchor" href="#retrieving-images-with-fancybox-support-in-a-theme"><span class="octicon octicon-link"></span></a>Retrieving Images with Fancybox Support in a Theme</h3>
 
-<p>If you prefer to not use the automatic generator, push a branch named <code>gh-pages</code> to your repository to create a page manually. In addition to supporting regular HTML content, GitHub Pages support Jekyll, a simple, blog aware static site generator written by our own Tom Preston-Werner. Jekyll makes it easy to create site-wide headers and footers without having to copy them across every page. It also offers intelligent blog support and other advanced templating features.</p>
+<p>Function syntax</p>
+
+<pre><code>dfiDisplayFeaturedImages($postId = null, $width = 150, $height = 150)
+</code></pre>
+
+<p>Example</p>
+
+<pre><code>if( function_exists('dfiDisplayFeaturedImages') ){
+    dfiDisplayFeaturedImages();
+}
+</code></pre>
+
+<p>or you can also call the shortcode directly</p>
+
+<pre><code>if( function_exists('dfiDisplayFeaturedImages') ){
+   echo do_shortcode('[dfiFeaturedImages]');
+}
+</code></pre>
 
 <h3>
-<a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Authors and Contributors</h3>
+<a name="applying-fancybox-settings" class="anchor" href="#applying-fancybox-settings"><span class="octicon octicon-link"></span></a>Applying Fancybox Settings</h3>
 
-<p>You can <a href="https://github.com/blog/821" class="user-mention">@mention</a> a GitHub username to generate a link to their profile. The resulting <code>&lt;a&gt;</code> element will link to the contributor's GitHub Profile. For example: In 2007, Chris Wanstrath (<a href="https://github.com/defunkt" class="user-mention">@defunkt</a>), PJ Hyett (<a href="https://github.com/pjhyett" class="user-mention">@pjhyett</a>), and Tom Preston-Werner (<a href="https://github.com/mojombo" class="user-mention">@mojombo</a>) founded GitHub.</p>
+<p>The fancybox settings can be applied by directly pasting the settings code in the "Fancybox Settings" textbox but the settings needs to be in a special format (JSON).
+You can get the settings for fancybox from <a href="http://fancyapps.com/fancybox/">fancybox docs</a>.</p>
+
+<ul>
+<li>Go to <code>Settings &gt; DFI Settings</code>
+</li>
+<li>Write your settings in a textbox as shown in the image and click <code>Save changes</code>
+<img src="http://ankitpokhrel.com.np/dfi/snapshot_settings.jpg" alt="DFI Settings">
+</li>
+</ul><h4>
+<a name="required-format-for-fancybox-settings" class="anchor" href="#required-format-for-fancybox-settings"><span class="octicon octicon-link"></span></a>Required Format for Fancybox Settings</h4>
+
+<p>The fancybox settings should be in a valid <code>JSON</code> format but without the opening curly braces.</p>
+
+<blockquote>
+<p>These settings are fancybox specific and primarily focused to developers.
+The fancybox version used in this project is 2.1.4. 
+Drop me a line at <code>ankitpokhrel@gmail.com</code> if you are confused with the settings. 
+The friendly version of the settings will be included in the future release.</p>
+</blockquote>
+
+<ul>
+<li>
+<p>Example #1 - Basic Settings</p>
+
+<pre><code>"maxWidth": 800,
+"maxHeight": 600,
+"fitToView": false,
+"width": "70%",
+"height": "70%",
+"autoSize": false,
+"closeClick": false,
+"openEffect": "none",
+"closeEffect": "none"
+</code></pre>
+</li>
+<li>
+<p>Example #2 - Using Thumbnail Helper</p>
+
+<pre><code>"openEffect": "elastic",
+"openSpeed": 150,
+"closeEffect": "elastic",
+"closeSpeed": 150,
+"closeClick": true,
+"helpers": {      
+    "thumbs": {
+        "width": 50,
+        "height": 50
+     }
+}
+</code></pre>
+</li>
+<li>
+<p>Example #3 - Using Button Helper</p>
+
+<pre><code>"prevEffect": "none",
+"nextEffect": "none",
+"closeBtn": false,
+"helpers": {       
+  "buttons": {}
+}
+</code></pre>
+</li>
+</ul><h1></h1>
 
 <h3>
-<a name="support-or-contact" class="anchor" href="#support-or-contact"><span class="octicon octicon-link"></span></a>Support or Contact</h3>
+<a name="todo-list" class="anchor" href="#todo-list"><span class="octicon octicon-link"></span></a>TODO List</h3>
 
-<p>Having trouble with Pages? Check out the documentation at <a href="http://help.github.com/pages">http://help.github.com/pages</a> or contact <a href="mailto:support@github.com">support@github.com</a> and we’ll help you sort it out.</p>
+<ol>
+<li>Title and Description for each featured image.</li>
+<li>Improved Settings Page.</li>
+<li>UI Change if Featured Image is More than Certain Number.</li>
+<li>and many more...</li>
+</ol><h3>
+<a name="author-available-for-hire" class="anchor" href="#author-available-for-hire"><span class="octicon octicon-link"></span></a>Author available for hire</h3>
+
+<p>I'm available for freelance work. Remote worldwide or locally around Nepal. Drop me a line if you like.</p>
+
+<h3>
+<a name="donate-with-paypal" class="anchor" href="#donate-with-paypal"><span class="octicon octicon-link"></span></a>Donate with <a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=J9FVY3ESPPD58">PayPal</a>
+</h3>
+
+<p>If you think this script is useful and saves you a lot of work, a lot of costs (PHP developers are expensive) and let you sleep much better, then donating a small amount would be very cool.</p>
+
+<p><a href="https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&amp;hosted_button_id=J9FVY3ESPPD58"><img src="http://ankitpokhrel.com.np/img/paypal.png" alt="Paypal"></a></p>
+
+<h3>
+<a name="questions-about-this-project" class="anchor" href="#questions-about-this-project"><span class="octicon octicon-link"></span></a>Questions about this project?</h3>
+
+<p>You can always contact me at <code>ankitpokhrel@gmail.com</code>, if you have any question or queries about the project. </p>
+
+<p>Please feel free to report any bug found. Pull requests, issues, and plugin recommendations are more than welcome!</p>
         </section>
 
         <aside id="sidebar">
